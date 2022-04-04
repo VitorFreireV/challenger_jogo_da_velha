@@ -1,8 +1,11 @@
 from fastapi.routing import APIRouter
 from src.schemas import input_game, output_game
-
+from src.models.game import Game
 
 router = APIRouter()
+
+
+game = Game()
 
 
 @router.get(
@@ -20,7 +23,7 @@ router = APIRouter()
 )
 async def status():
     try:
-        pass
+        return game.get_status()
     except:
         pass
 
@@ -62,7 +65,7 @@ async def jogada(play: input_game.Play):
         },
     },
 )
-async def jogada():
+async def reniciar():
     try:
         pass
     except:
