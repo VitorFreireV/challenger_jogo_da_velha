@@ -41,6 +41,10 @@ class Game:
         return {"status": self.status, "jogadas": self.play_history}
 
     def validate_and_execute_play(self, play):
+        if self.status != "Em andamento":
+            return {
+                "message": f"The game is over. Status: {self.status}"
+            }
         if self.player_turn == play["player"]:
             return {
                 "message": f"Invalid play. Two consecutive moves by the same player are not allowed, player '{'X' if self.player_turn == 'O' else 'O'}' is expected to move."
