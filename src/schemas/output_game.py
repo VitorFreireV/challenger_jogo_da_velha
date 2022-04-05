@@ -4,7 +4,7 @@ from typing import List
 
 
 class GameStatus(BaseModel):
-    play_history: List[Play]
+    jogadas: List[Play]
     status: str
 
 

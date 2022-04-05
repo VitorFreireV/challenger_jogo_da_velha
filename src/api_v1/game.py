@@ -1,4 +1,5 @@
 from fastapi.routing import APIRouter
+from fastapi import Response
 from src.schemas import input_game, output_game
 from src.models.game import Game
 
@@ -23,9 +24,9 @@ game = Game()
 )
 async def status():
     try:
-        return game.get_status()
-    except:
-        pass
+        return output_game.GameStatus(**game.get_status())
+    except Exception as e:
+        return {"status_code": 500, "message": f"Internal error! Error: {str(e)}"}
 
 
 @router.post(
@@ -45,14 +46,25 @@ async def status():
         },
     },
 )
-async def jogada(play: input_game.Play):
+async def jogada(play: input_game.Play, response: Response):
     try:
-        pass
-    except:
-        pass
+        result = game.validate_and_execute_play(
+            {
+                "player": play.jogador,
+                "x": int(play.posicao.value[1]),
+                "y": int(play.posicao.value[2]),
+            }
+        )
+        if result == True:
+            return output_game.Play(**play.dict())
+        else:
+            response.status_code = 409
+            return output_game.MessageModel(**result)
+    except Exception as e:
+        return {"status_code": 500, "message": f"Internal error! Error: {str(e)}"}
 
 
-@router.post(
+@router.delete(
     "/reiniciar",
     responses={
         200: {
@@ -67,6 +79,6 @@ async def jogada(play: input_game.Play):
 )
 async def reniciar():
     try:
-        pass
-    except:
-        pass
+        game.restart()
+    except Exception as e:
+        return {"status_code": 500, "message": f"Internal error! Error: {str(e)}"}
