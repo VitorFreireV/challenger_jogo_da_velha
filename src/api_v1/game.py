@@ -22,11 +22,12 @@ game = Game()
         },
     },
 )
-async def status():
+async def status(response: Response):
     try:
         return output_game.GameStatus(**game.get_status())
     except Exception as e:
-        return {"status_code": 500, "message": f"Internal error! Error: {str(e)}"}
+        response.status_code = 500
+        return {"message": f"Internal error! Error: {str(e)}"}
 
 
 @router.post(
@@ -77,8 +78,9 @@ async def jogada(play: input_game.Play, response: Response):
         },
     },
 )
-async def reniciar():
+async def reniciar(response: Response):
     try:
         game.restart()
     except Exception as e:
-        return {"status_code": 500, "message": f"Internal error! Error: {str(e)}"}
+        response.status_code = 500
+        return {"message": f"Internal error! Error: {str(e)}"}
