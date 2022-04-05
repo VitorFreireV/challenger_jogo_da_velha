@@ -51,7 +51,7 @@ async def jogada(play: input_game.Play, response: Response):
     try:
         result = game.validate_and_execute_play(
             {
-                "player": play.jogador,
+                "player": play.jogador.value,
                 "x": int(play.posicao.value[1]),
                 "y": int(play.posicao.value[2]),
             }

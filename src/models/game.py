@@ -18,24 +18,15 @@ class Game:
     def calculate_status_by_play(self, play):
         # calculate actual state, check rows, columns and diagonal
         if abs(sum(self.board[:, play["y"] - 1])) == self.size:
-            self.status = f"Vitoria de {self.play['player']}"
-            return
-
-        if abs(sum(self.board[play["x"] - 1, :])) == self.size:
-            self.status = f"Vitoria de {self.play['player']}"
-            return
-
-        if abs(sum(self.board.diagonal())) == self.size:
-            self.status = f"Vitoria de {self.play['player']}"
-            return
-
-        if abs(sum(np.flipud(self.board).diagonal())) == self.size:
-            self.status = f"Vitoria de {self.play['player']}"
-            return
-
-        if not np.any(self.board == 0):
+            self.status = f"Vitoria de {play['player']}"
+        elif abs(sum(self.board[play["x"] - 1, :])) == self.size:
+            self.status = f"Vitoria de {play['player']}"
+        elif abs(sum(self.board.diagonal())) == self.size:
+            self.status = f"Vitoria de {play['player']}"
+        elif abs(sum(np.flipud(self.board).diagonal())) == self.size:
+            self.status = f"Vitoria de {play['player']}"
+        elif not np.any(self.board == 0):
             self.status = "Empate"
-            return
 
     def get_status(self):
         return {"status": self.status, "jogadas": self.play_history}
