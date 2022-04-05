@@ -17,19 +17,19 @@ class Game:
 
     def calculate_status_by_play(self, play):
         # calculate actual state, check rows, columns and diagonal
-        if abs(sum(self.board[:, play["y"]])) == self.size:
+        if abs(sum(self.board[:, play["y"] - 1])) == self.size:
             self.status = f"Vitoria de {self.play['player']}"
             return
 
-        if abs(sum(self.board[play["x"], :])) == self.size:
+        if abs(sum(self.board[play["x"] - 1, :])) == self.size:
             self.status = f"Vitoria de {self.play['player']}"
             return
 
-        if sum(self.board.diagonal()) == self.size:
+        if abs(sum(self.board.diagonal())) == self.size:
             self.status = f"Vitoria de {self.play['player']}"
             return
 
-        if sum(np.flipud(self.board).diagonal()) == self.size:
+        if abs(sum(np.flipud(self.board).diagonal())) == self.size:
             self.status = f"Vitoria de {self.play['player']}"
             return
 
@@ -58,6 +58,6 @@ class Game:
             {"jogador": play["player"], "posicao": f"P{play['x']}{play['y']}"}
         )
         self.player_turn = play["player"]
-        self.board[play["x"] - 1, play["y"] - 1] = -1 if play["player"] == "X" else -2
+        self.board[play["x"] - 1, play["y"] - 1] = -1 if play["player"] == "X" else 1
         self.calculate_status_by_play(play)
         return True
